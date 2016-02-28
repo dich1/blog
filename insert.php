@@ -3,7 +3,15 @@
 require_once('config.php');
 require_once('functions.php');
 
+$dsn = 'mysql:dbname=blog;host=localhost';
+$user = 'root';
+$password = 'daich1';
+
 try{
+	$dbh = new PDO($dsn, $user, $password);
+
+	$dbh->query('SET NAMES utf8');
+
 	$sql = 'insert into contacts 
 			(name, email, message, created_at) 
 			values 
