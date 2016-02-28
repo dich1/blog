@@ -3,10 +3,10 @@
 function connectDb() {
     
     try {
-        $dbh = new PDO($dsn, $user, $password);
+        return new PDO(DSN, DB_USER, DB_PASSWORD);
     }catch (PDOException $e){
-      print('Connection failed:'.$e->getMessage());
-      die();
+      echo $e->getMessage();
+      exit;
     } 
 }
 
@@ -21,10 +21,11 @@ function setToken() {
 }
 
 function checkToken() {
-    if (empty($_POST['token']) || $_POST['token'] != $_SESSION['token']){
+    if (empty($_POST['token']) || $_POST['token'] != $_SESSION['token']) {
         echo "不正な処理です！";
         exit;
     }
+
 }
 
 ?>

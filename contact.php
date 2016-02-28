@@ -2,6 +2,7 @@
 
 require_once('config.php');
 require_once('functions.php');
+require_once('insert.php');
 
 session_start();
 
@@ -44,9 +45,14 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
         $params = array(
             ":name" => $name,
             ":email" => $email,
-            ":message" => $message
+            ":message" => $message,
+            ":created_at" => $created_at
         );
         $stmt->execute($params);
+
+        // ありがとうページヘ
+        header('Location: '.SITE_URL.'thanks.html');
+        exit;
 
     }
 
@@ -108,11 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
         </header>
         <div class="center-container">
             <div class="content col-sm-11">
-                <form class="form-horizontal" action="contact.php" method="post">
+                <form class="form-horizontal" action="insert.php" method="post">
                     <div class="form-group">
                         <label for="inputName" class="col-md-2 control-label">Name</label>
                         <div class="col-md-10">                
-                            <input type="text" class="form-control" id="inputName" name="name" placeholder="名前">                           
+                            <input type="text" class="form-control" id="inputName" name="name" placeholder="名前" value="<?php echo h($email); ?>">
+                            <?php if ($error['email']) { echo h($error['email']); } ?>                           
                         </div>
                     </div>
                     <div class="form-group">
@@ -124,12 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
                     <div class="form-group">
                         <label for="inputContent" class="col-md-2 control-label">お問合せ内容</label>
                         <div class="col-md-10">                             
-                            <textarea class="form-control" id="inputContent" name="message" placeholder="内容をお書きください。" rows="8" ></textarea>                         
+                            <textarea class="form-control" id="inputContent" name="message" placeholder="内容をお書きください。" rows="8" ><?php echo h($message); ?></textarea>
+                            <?php if ($error['message']) { echo h($error['message']); } ?>                         
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-1 col-sm-11">
                             <input type="submit" class="btn btn-success" value="Send">
+                            <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
                         </div>
                     </div>
                 </form>
