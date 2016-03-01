@@ -15,14 +15,13 @@ try{
 	$sql = 'insert into contacts 
 			(name, email, message, created_at) 
 			values 
-			(":name", ":email", ":message", ":created_at")';
+			(":name", ":email", ":message", "now()")';
     $stmt = $dbh->prepare($sql);
-    $parms = ( array( 
-    	":name" => "name",
-    	":email" => "email",
-    	":message" => "message",
-    	":created_at" => "created_at"
-	) );
+    $parms = array( 
+    	":name" => $name,
+    	":email" => $email,
+    	":message" => $message,
+	);
     $flag = $stmt->execute($parms);
 
     if ($flag){
