@@ -43,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
                 (:name, :email, :message, now())";
         $stmt = $dbh->prepare($sql);
         $params = array(
-            ":name" => $name,
-            ":email" => $email,
-            ":message" => $message,
-            ":created_at" => $created_at
+            ':name' => $name,
+            ':email' => $email,
+            ':message' => $message,
+            ':created_at' => $created_at
         );
         $stmt->execute($params);
 

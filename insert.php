@@ -12,15 +12,15 @@ try{
 
 	$dbh->query('SET NAMES utf8');
 
-	$sql = 'insert into contacts 
+	$sql = "insert into contacts 
 			(name, email, message, created_at) 
 			values 
-			(":name", ":email", ":message", "now()")';
+			(:name, :email, :message, now())";
     $stmt = $dbh->prepare($sql);
     $parms = array( 
-    	":name" => $name,
-    	":email" => $email,
-    	":message" => $message,
+    	'name' => $name,
+    	'email' => $email,
+    	'message' => $message,
 	);
     $flag = $stmt->execute($parms);
 
