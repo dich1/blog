@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
     
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $memo = $_POST['message'];
+    $message = $_POST['message'];
 
     $error = array();
     
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
     if ($email == '') {
         $error['email'] = 'メールアドレスを入力してください。';
     }
-    if ($memo == '') {
+    if ($message == '') {
         $error['message'] = '内容を入力してください。';
     }
     
