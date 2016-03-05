@@ -2,7 +2,6 @@
 
 require_once('config.php');
 require_once('functions.php');
-require_once('insert.php');
 
 session_start();
 
@@ -15,10 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
 } else {
     // 投稿後
     checkToken();
-    
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $message = $_POST['message'];
 
     $error = array();
     
@@ -34,25 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
     }
     
     if (empty($error)) {
-        // DBに格納
+        // DBに接続
         $dbh = connectDb();
-        
-        $sql = "insert into contacts 
-                (name, email, message, created_at) 
-                values 
-                (:name, :email, :message, now())";
-        $stmt = $dbh->prepare($sql);
-        $params = array(
-            ':name' => $name,
-            ':email' => $email,
-            ':message' => $message,
-            ':created_at' => $created_at
-        );
-        $stmt->execute($params);
-
-        // ありがとうページヘ
-        header('Location: '.SITE_URL.'thanks.html');
-        exit;
 
     }
 

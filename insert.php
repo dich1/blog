@@ -3,34 +3,32 @@
 require_once('config.php');
 require_once('functions.php');
 
-$dsn = 'mysql:dbname=blog;host=localhost';
-$user = 'root';
-$password = 'daich1';
 
 try{
-	$dbh = new PDO($dsn, $user, $password);
 
 	$dbh = connectDb();
 
-	$dbh->query('SET NAMES utf8');	
+		
 
+	$name = $_POST['name'];
+    $email = $_POST['email'];
+    $message = $_POST['message'];
 	// DBに格納
 	$sql = "insert into contacts 
-			(name, email, message, created_at) 
-			values 
-			(:name, :email, :message, now())";
-    $stmt = $dbh->prepare($sql);
-    $parms = (array( 
-    	':name' => $_POST['name'],
-    	':email' => $_POST['email'],
-    	':message' => $_POST['message']
-	));
+                (name, email, message, created_at) 
+                values 
+                (:name, :email, :message, now())";
+        $stmt = $dbh->prepare($sql);
+        $params = array(
+            ':name' => $name,
+            ':email' => $email,
+            ':message' => $message
+        );
+    $flag = $stmt->execute($params);
 
-	print_r($_POST);
-
-    var_dump($parms);
-
-    $flag = $stmt->execute($parms);
+    // ありがとうページヘ
+        // header('Location: '.SITE_URL.'thanks.html');
+        // exit;
 
     if ($flag){
         print('データの追加に成功しました<br>');
@@ -40,7 +38,7 @@ try{
 
     print('追加後のデータ一覧：<br>');
 
-    $sql = 'name, email, message, created_at from contacts';
+    $sql = 'select id, name, email, message, created_at from contacts';
     $stmt = $dbh->prepare($sql);
     $stmt->execute($parms);
 
@@ -51,11 +49,12 @@ try{
         print($result['created_at'].'<br>');
     }
 
-    $dbh = null;
+    
 }catch (PDOException $e){
   print('Connection failed:'.$e->getMessage());
   die();
 } 
 
+$dbh = null;
 
 ?>
